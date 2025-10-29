@@ -31,11 +31,21 @@ Implementación completa de un CRUD de tareas con interfaz web y API REST para e
 
 ```bash
 # Clonar el proyecto
-git clone <url-del-repositorio>
+git clone https://github.com/martha-mh/php-codeigniter-test.git
 cd php-codeigniter-test
 ```
 
-#### Paso 2: Verificar requisitos
+#### Paso 2: Configurar base de datos
+
+```bash
+# Copiar el archivo de configuración de ejemplo
+cp application/config/database.php.example application/config/database.php
+
+# El archivo ya tiene la configuración correcta para Docker
+# No necesitas modificarlo si usas Docker
+```
+
+#### Paso 3: Verificar requisitos
 
 Asegúrate de tener instalado:
 - Docker Desktop (Mac/Windows) o Docker Engine (Linux)
@@ -47,7 +57,7 @@ docker --version
 docker-compose --version
 ```
 
-#### Paso 3: Levantar los servicios
+#### Paso 4: Levantar los servicios
 
 ```bash
 # Construir y levantar los contenedores en segundo plano
@@ -72,7 +82,7 @@ Este comando:
  ✔ Container ci_phpmyadmin               Started
 ```
 
-#### Paso 4: Verificar que todo funciona
+#### Paso 5: Verificar que todo funciona
 
 ```bash
 # Ver logs del contenedor web
@@ -94,7 +104,7 @@ docker exec php-codeigniter-test-web-1 php index.php migrate status
 # [OK] [001] create_tasks_table
 ```
 
-#### Paso 5: Acceder a la aplicación
+#### Paso 6: Acceder a la aplicación
 
 Abre tu navegador en:
 - **Aplicación web**: http://127.0.0.1:8080/tasks
@@ -170,13 +180,34 @@ brew services start httpd
 #### Paso 2: Clonar el repositorio
 
 ```bash
-git clone <url-del-repositorio>
+git clone https://github.com/martha-mh/php-codeigniter-test.git
 cd php-codeigniter-test
 ```
 
 #### Paso 3: Configurar la base de datos
 
-**3.1. Crear base de datos y usuario:**
+**3.1. Copiar archivo de configuración:**
+
+```bash
+# Copiar el archivo de ejemplo
+cp application/config/database.php.example application/config/database.php
+
+# Editar con tu editor favorito
+nano application/config/database.php
+# o
+code application/config/database.php
+```
+
+**3.2. Ajustar credenciales en `database.php`:**
+
+```php
+'hostname' => 'localhost',  // Cambiar de 'db' a 'localhost'
+'username' => 'ci_user',
+'password' => 'cipass',
+'database' => 'ci_db',
+```
+
+**3.3. Crear base de datos y usuario:**
 
 ```bash
 # Acceder a MySQL
@@ -846,25 +877,29 @@ El ejercicio 2 (análisis de código problemático) está documentado en `ANALYS
 
 ## Inicio Rápido (Resumen)
 
-### Con Docker (3 comandos):
+### Con Docker (4 comandos):
 ```bash
-git clone <url-del-repositorio>
+git clone https://github.com/martha-mh/php-codeigniter-test.git
 cd php-codeigniter-test
-docker-compose up -d --build
+cp application/config/database.php.example application/config/database.php
+docker-compose up -d
 ```
 **Listo!** -> http://127.0.0.1:8080/tasks
 
-### Sin Docker (5 pasos):
+### Sin Docker (6 pasos):
 ```bash
 # 1. Instalar requisitos (PHP 7.4+, MySQL 8.0+, Apache)
+
 # 2. Clonar repositorio
-git clone <url-del-repositorio>
+git clone https://github.com/martha-mh/php-codeigniter-test.git
 cd php-codeigniter-test
 
-# 3. Crear base de datos
-mysql -u root -p -e "CREATE DATABASE ci_db; CREATE USER 'ci_user'@'localhost' IDENTIFIED BY 'cipass'; GRANT ALL ON ci_db.* TO 'ci_user'@'localhost';"
+# 3. Configurar database.php
+cp application/config/database.php.example application/config/database.php
+# Editar y cambiar 'hostname' de 'db' a 'localhost'
 
-# 4. Configurar database.php (cambiar 'db' a 'localhost')
+# 4. Crear base de datos
+mysql -u root -p -e "CREATE DATABASE ci_db; CREATE USER 'ci_user'@'localhost' IDENTIFIED BY 'cipass'; GRANT ALL ON ci_db.* TO 'ci_user'@'localhost';"
 
 # 5. Ejecutar migraciones
 php index.php migrate
