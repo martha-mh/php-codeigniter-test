@@ -1,0 +1,92 @@
+services:
+  web:
+    build:
+      context: .
+      dockerfile: docker/php/Dockerfile
+    ports:
+      - "8080:80"
+    volumes:
+      - ./application:/var/www/html/application
+      - ./index.php:/var/www/html/index.php
+      - ./system:/var/www/html/system
+      - ./.htaccess:/var/www/html/.htaccess
+      - ./docker/init-db.sh:/usr/local/bin/init-db.sh
+    depends_on:
+      db:
+        condition: service_healthy
+    entrypoint: ["/bin/bash", "-c"]
+    command:
+      - |
+        echo "================================================"
+        echo "  Inicializando Base de Datos"
+        echo "================================================"
+        echo ""
+        echo "[WAIT] Esperando a que MySQL esté listo..."
+        sleep 10
+        
+        # Reintentar hasta 5 veces
+        max_attempts=5
+        attempt=1
+        
+        while [ $$attempt -le $$max_attempts ]; do
+          echo "Intento $$attempt de $$max_attempts: Ejecutando migraciones..."
+          if php /var/www/html/index.php migrate; then
+            echo ""
+            echo "[OK] Base de datos inicializada correctamente"
+            break
+          else
+            if [ $$attempt -eq $$max_attempts ]; then
+              echo ""
+              echo "[ERROR] No se pudieron ejecutar las migraciones después de $$max_attempts intentos"
+              echo "   Verifica los logs o ejecuta manualmente:"
+              echo "   docker exec php-codeigniter-test-web-1 php index.php migrate"
+              echo ""
+            else
+              echo "[WARN] Intento fallido, esperando 3 segundos..."
+              sleep 3
+            fi
+            attempt=$$((attempt + 1))
+          fi
+        done
+        
+        echo ""
+        echo "================================================"
+        echo "  Iniciando Apache"
+        echo "================================================"
+        apache2-foreground
+
+  db:
+    image: mysql:8.0
+    platform: linux/amd64
+    container_name: ci_db
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpass
+      MYSQL_DATABASE: ci_db
+      MYSQL_USER: ci_user
+      MYSQL_PASSWORD: cipass
+    ports:
+      - "3306:3306"
+    volumes:
+      - db_data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-prootpass"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    platform: linux/amd64
+    container_name: ci_phpmyadmin
+    environment:
+      PMA_HOST: db
+      PMA_USER: root
+      PMA_PASSWORD: rootpass
+    ports:
+      - "8081:80"
+    depends_on:
+      - db
+
+volumes:
+  db_data:

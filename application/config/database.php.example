@@ -1,0 +1,64 @@
+<?php
+/**
+ * Database Configuration Example
+ * 
+ * INSTRUCCIONES:
+ * 1. Copia este archivo como 'database.php' en el mismo directorio
+ * 2. Ajusta las credenciales según tu entorno:
+ *    - Para Docker: hostname='db', usar credenciales del docker-compose.yml
+ *    - Para local: hostname='localhost' o '127.0.0.1'
+ * 3. NUNCA subas database.php al repositorio (está en .gitignore)
+ */
+
+defined('BASEPATH') OR exit('No direct script access allowed');
+
+$active_group = 'default';
+$query_builder = TRUE;
+
+$db['default'] = array(
+    'dsn'   => '',
+    
+    // ==============================================
+    // OPCIÓN 1: Docker (recomendado)
+    // ==============================================
+    'hostname' => 'db',              // Nombre del servicio en docker-compose.yml
+    'username' => 'ci_user',         // Usuario de MySQL
+    'password' => 'cipass',          // Contraseña (cambiar en producción)
+    'database' => 'ci_db',           // Nombre de la base de datos
+    
+    // ==============================================
+    // OPCIÓN 2: Instalación local
+    // ==============================================
+    // 'hostname' => 'localhost',    // O '127.0.0.1'
+    // 'username' => 'root',         // Tu usuario de MySQL
+    // 'password' => '',             // Tu contraseña de MySQL
+    // 'database' => 'ci_db',        // Nombre de tu base de datos
+    
+    // ==============================================
+    // Configuración del driver
+    // ==============================================
+    'dbdriver' => 'mysqli',
+    'dbprefix' => '',
+    'pconnect' => FALSE,
+    'db_debug' => (ENVIRONMENT !== 'production'),
+    'cache_on' => FALSE,
+    'cachedir' => '',
+    'char_set' => 'utf8mb4',
+    'dbcollat' => 'utf8mb4_general_ci',
+    'swap_pre' => '',
+    'encrypt' => FALSE,
+    'compress' => FALSE,
+    'stricton' => FALSE,
+    'failover' => array(),
+    'save_queries' => TRUE
+);
+
+// ==============================================
+// MEJORES PRÁCTICAS:
+// ==============================================
+// 1. Usar variables de entorno en producción:
+//    'hostname' => getenv('DB_HOSTNAME') ?: 'localhost'
+// 2. Nunca hardcodear credenciales en producción
+// 3. Cambiar contraseñas por defecto
+// 4. Usar SSL/TLS en producción ('encrypt' => TRUE)
+// 5. Deshabilitar db_debug en producción
