@@ -112,7 +112,7 @@ Abre tu navegador en:
   - Usuario: `root`
   - Contraseña: `rootpass`
 
-#### Paso 6: Probar la API
+#### Paso 7: Probar la API
 
 ```bash
 # Listar tareas
@@ -518,7 +518,7 @@ cp .env.example .env
 ## Testing Manual
 
 ### Probar el CRUD Web
-1. Abre http://127.0.0.1:8080/index.php/tasks
+1. Abre http://127.0.0.1:8080/tasks
 2. Crea una nueva tarea
 3. Edita y cambia su estado
 4. Usa el buscador AJAX
@@ -815,64 +815,6 @@ mysql -u ci_user -pcipass ci_db -e "SELECT * FROM tasks;"
 5. Añadir autenticación y autorización
 6. Implementar rate limiting en la API
 
-## Análisis de Código
-
-El ejercicio 2 (análisis de código problemático) está documentado en `ANALYSIS.md` con:
-- Identificación de problemas
-- Riesgos de seguridad
-- Soluciones propuestas
-- Código refactorizado
-
-## Cumplimiento del Ejercicio
-
-### Ejercicio 1: Sistema de Gestión de Tareas
-- [x] Estructura MVC completa
-- [x] CRUD con CodeIgniter 3
-- [x] API REST JSON
-- [x] Filtros y búsqueda
-- [x] Validación de datos
-- [x] SQL con tabla especificada
-- [x] README con instrucciones
-
-### Ejercicio 2: Análisis de Código
-- [x] Identificación de problemas
-- [x] Evaluación de riesgos
-- [x] Propuestas de mejora
-- [x] Código refactorizado
-
----
-
-## Checklist de Verificación Rápida
-
-### Después de instalar con Docker:
-- [ ] `docker ps` muestra 3 contenedores corriendo (web, db, phpmyadmin)
-- [ ] `docker-compose logs web | grep "[OK]"` muestra migraciones exitosas
-- [ ] `curl http://127.0.0.1:8080/tasks` retorna HTML
-- [ ] `curl http://127.0.0.1:8080/api/tasks` retorna JSON
-- [ ] http://127.0.0.1:8080/tasks abre en el navegador
-- [ ] http://127.0.0.1:8081 abre phpMyAdmin
-- [ ] La tabla `tasks` existe en la base de datos `ci_db`
-
-### Después de instalar sin Docker:
-- [ ] `php -v` muestra PHP 7.4+
-- [ ] `mysql --version` muestra MySQL 8.0+
-- [ ] `php index.php migrate status` muestra versión 1
-- [ ] La base de datos `ci_db` existe
-- [ ] El usuario `ci_user` puede conectarse
-- [ ] Apache/servidor web está corriendo
-- [ ] http://localhost:8000/tasks o http://tasks.local/tasks abre en el navegador
-- [ ] `curl http://localhost:8000/api/tasks` retorna JSON
-
-### Funcionalidades a probar:
-- [ ] Crear nueva tarea desde el modal
-- [ ] Editar tarea existente
-- [ ] Cambiar estado de tarea (pending <-> completed)
-- [ ] Eliminar tarea con confirmación SweetAlert2
-- [ ] Buscar tareas con el campo de búsqueda (AJAX)
-- [ ] Filtrar por estado con los botones
-- [ ] Probar endpoints de API con curl/Postman
-- [ ] Acceder a phpMyAdmin y ver la tabla `tasks`
-
 ---
 
 ## Inicio Rápido (Resumen)
@@ -911,13 +853,6 @@ php -S localhost:8000
 
 ---
 
-## Soporte
-
-Si encuentras algún problema:
-1. Revisa la sección [Solución de Problemas](#solución-de-problemas)
-2. Verifica los logs: `docker-compose logs web` o `tail -f application/logs/log-*.php`
-3. Asegúrate de cumplir todos los requisitos de la sección correspondiente
-
 ## Autor
 
-Proyecto desarrollado como parte del ejercicio técnico PHP Developer 2025.
+Proyecto desarrollado como parte del ejercicio técnico PHP Developer 2025 por Martha Morales.
