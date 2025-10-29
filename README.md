@@ -15,7 +15,6 @@ Implementación completa de un CRUD de tareas con interfaz web y API REST para e
 - [Sistema de Migraciones](#sistema-de-migraciones)
 - [Solución de Problemas](#solución-de-problemas)
 - [Notas de Desarrollo](#notas-de-desarrollo)
-- [Análisis de Código](#análisis-de-código)
 - [Cumplimiento del Ejercicio](#cumplimiento-del-ejercicio)
 
 ## Requisitos
